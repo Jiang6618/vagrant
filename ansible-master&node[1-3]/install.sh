@@ -33,6 +33,7 @@ sysctl -p
 
 echo 'set host name resolution'
 cat >> /etc/hosts <<EOF
+172.17.6.10 master
 172.17.6.11 node1
 172.17.6.12 node2
 172.17.6.13 node3
