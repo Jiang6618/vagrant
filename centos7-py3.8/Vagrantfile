@@ -1,86 +1,38 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
 Vagrant.configure("2") do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
-
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://vagrantcloud.com/search.
+  
   config.vm.box = "centos7-py3.8"
 
-  # The url from where the 'config.vm.box' box will be fetched if it
-  # doesn't already exist on the user's system.
   config.vm.box_url = "https://cloud.centos.org/centos/7/vagrant/x86_64/images/CentOS-7-x86_64-Vagrant-2004_01.VirtualBox.box"
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # NOTE: This will enable public access to the opened port
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
-
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine and only allow access
-  # via 127.0.0.1 to disable public access
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
   config.vm.network "public_network"#, ip: "172.16.7.10"
 
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   yum install epel-release -y
+  #   yum install gcc wget -y
+  #   yum groupinstall "Development tools" -y
+  #   yum install zlib-devel bzip2-devel openssl openssl-devel ncurses-devel sqlite-devel -y
+  #   cd /tmp && wget http://my.jiang2021.cn:56102/download/python/Python-3.8.12.tgz
+  #   chmod 755 /vagrant/Python-3.8.12.tgz
+  #   tar xf /vagrant/Python-3.8.12.tgz -C /tmp/ 
+  #   cd /tmp/Python-3.8.12/
+  #   ./configure --prefix=/usr/local/python3.8 && make && make install
+  #   mv `which python` `which python`2.7.5
+  #   sed -i "s@/usr/bin/python@/usr/bin/python2.7@g" `which yum`
+  #   sed -i "s@/usr/bin/python@/usr/bin/python2.7@g" /usr/libexec/urlgrabber-ext-down
+  #   yum install -y  telnet vim tree net-tools
+  #   ln -s /usr/local/python3.8/bin/python3 /bin/python
+  #   ln -s /usr/local/python3.8/bin/pip3 /bin/pip
+  #   python -V 
+  #   pip -V
+  #   # set ssh key for mac && win
+  #   echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDd2IX7HndNRsqEjsFhow+K52eO4L7Vjx5Ce54l0GZwcsiwCp3tAv39KiV48wMioqRoMUCPVZsfTgy8v/9eKNiSdW0NAhUaA8Y0wzSFUcZbeTvGIdJCaBKLpD6ehKtEwCjoZBWpaMlT2/WfGsSktCIaMwS2m3GlT+Rp94fs6AzpeaM9yO2Z7bWvIcDzff5Wc9n28U75NhXzuEDVvAyDeN8GkIAxnHTLHvWwQx8fHWun6NzNppbiXrD5jdntcXFeG6f9kWwRC8U+VMpTs8tWWAKr8z0TNiS3JpF1yfBvCACEs8go/l+FU82n4ilzNNmUqUBFMGdCYayxVG93sRa0YiiZeigm9pmN+kYe61HiDsUEgHFe0bCnbkaUyPJVhyruo520H4sWHU6k+w1tw3Jqy51nOmPYdLpN1lRE3NazKaODExoWG+So14Fz1qaBA+rN7UQWm+YYtglJllTfFYDlnnx30wVtOwb/2v4IuhxyuLEOxhMKN32TJFtP6piKzwcqUqs= Vixtel@DESKTOP-UNFIOA1" >> /home/vagrant/.ssh/authorized_keys
+  #   echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuf+zd/jzUOWSYovhzoKiEB6JWyUnPE5yducO3RDhsAyxRUlnMBvEP43MkOBSGgmdAkhz3kZi9twP/fOX4518/S4FvJo3YC2UILOQVgHbgwNqNZUbPrlbKfVE9uN2ikHW/POOhohWcl0Pb0cwi21a0beZ8yNww1vGErftkVEXoDEK+gDiC7w5qsQ+9nBDhAkSbqvANfMucFkNUgH8O0M/1gpaejPc1S9RbseZxEhuS6A7Cb5NhY8lvlJYvKDzrSf1iNBshZ3MwtjNcYIKBL2jQxLC21QfNxMxgDt7eJMGRbUNAn6vCWrF8zbMqSA0u1sSKzTCJk1pwKhcPUvCaQA6F lijunjiang2012@163.com" >> /home/vagrant/.ssh/authorized_keys
+  # SHELL
 
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    yum install epel-release -y
-    yum install gcc -y
-    yum groupinstall "Development tools" -y
-    yum install zlib-devel bzip2-devel openssl openssl-devel ncurses-devel sqlite-devel -y
-    chmod 755 /vagrant/Python-3.8.12.tgz
-    tar xf /vagrant/Python-3.8.12.tgz -C /tmp/ 
-    cd /tmp/Python-3.8.12/
-    ./configure --prefix=/usr/local/python3.8 && make && make install
-    mv `which python` `which python`2.7.5
-    sed -i "s@/usr/bin/python@/usr/bin/python2.7@g" `which yum`
-    sed -i "s@/usr/bin/python@/usr/bin/python2.7@g" /usr/libexec/urlgrabber-ext-down
-    yum install -y wget telnet vim tree net-tools
-    ln -s /usr/local/python3.8/bin/python3 /bin/python
-    ln -s /usr/local/python3.8/bin/pip3 /bin/pip
-    python -V 
-    pip -V
-    # set ssh key for mac && win
-    echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDd2IX7HndNRsqEjsFhow+K52eO4L7Vjx5Ce54l0GZwcsiwCp3tAv39KiV48wMioqRoMUCPVZsfTgy8v/9eKNiSdW0NAhUaA8Y0wzSFUcZbeTvGIdJCaBKLpD6ehKtEwCjoZBWpaMlT2/WfGsSktCIaMwS2m3GlT+Rp94fs6AzpeaM9yO2Z7bWvIcDzff5Wc9n28U75NhXzuEDVvAyDeN8GkIAxnHTLHvWwQx8fHWun6NzNppbiXrD5jdntcXFeG6f9kWwRC8U+VMpTs8tWWAKr8z0TNiS3JpF1yfBvCACEs8go/l+FU82n4ilzNNmUqUBFMGdCYayxVG93sRa0YiiZeigm9pmN+kYe61HiDsUEgHFe0bCnbkaUyPJVhyruo520H4sWHU6k+w1tw3Jqy51nOmPYdLpN1lRE3NazKaODExoWG+So14Fz1qaBA+rN7UQWm+YYtglJllTfFYDlnnx30wVtOwb/2v4IuhxyuLEOxhMKN32TJFtP6piKzwcqUqs= Vixtel@DESKTOP-UNFIOA1" >> /home/vagrant/.ssh/authorized_keys
-    echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuf+zd/jzUOWSYovhzoKiEB6JWyUnPE5yducO3RDhsAyxRUlnMBvEP43MkOBSGgmdAkhz3kZi9twP/fOX4518/S4FvJo3YC2UILOQVgHbgwNqNZUbPrlbKfVE9uN2ikHW/POOhohWcl0Pb0cwi21a0beZ8yNww1vGErftkVEXoDEK+gDiC7w5qsQ+9nBDhAkSbqvANfMucFkNUgH8O0M/1gpaejPc1S9RbseZxEhuS6A7Cb5NhY8lvlJYvKDzrSf1iNBshZ3MwtjNcYIKBL2jQxLC21QfNxMxgDt7eJMGRbUNAn6vCWrF8zbMqSA0u1sSKzTCJk1pwKhcPUvCaQA6F lijunjiang2012@163.com" >> /home/vagrant/.ssh/authorized_keys
-  SHELL
+  config.vm.provision :ansible do |ansible|
+    ansible.playbook = "playbook.yml"
+  end
 end
