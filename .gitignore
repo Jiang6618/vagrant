@@ -5,7 +5,7 @@ db.json
 node_modules/
 public/
 .deploy*/
-*/.vagrant/
+*/.vagrant/*
 */*.tar.*
 .vagrant/*
 .vagrant
