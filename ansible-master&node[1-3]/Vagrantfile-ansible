@@ -56,7 +56,7 @@ Vagrant.configure("2") do |config|
             "masters" => ["master"],
             # "nodes" => ["node1", "node2", "node3"],
             "nodes" => ["node[1:#{$num_instances}]"],
-            "all_group:children" => ["master", "nodes"]
+            "all_group:children" => ["masters", "nodes"]
         }
     end
 end
