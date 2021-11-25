@@ -37,3 +37,23 @@ Vagrant.require_version ">= 1.3.5", "< 1.4.0"
 end
 ```
 ## Machine Settings
+- 
+```
+```
+---
+
+# with Ansible
+## Dynamically generate list
+```ruby
+num_instances = 3
+
+config.vm.provision "ansible" do |ansible|
+  ansible.playbook = "playbook.yml"
+  ansible.groups = {
+      "masters" => ["master"],
+      # "nodes" => ["node1", "node2", "node3"],
+      "nodes" => ["node[1:#{num_instances}]"],
+      "all_group:children" => ["masters", "nodes"]
+  }
+end
+```

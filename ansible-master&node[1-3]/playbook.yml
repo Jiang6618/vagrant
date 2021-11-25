@@ -5,10 +5,19 @@
     - name: ensure ntpd is at the latest version
       yum: pkg=ntp state=latest
       notify:
-      - restart htpd
+      - restart ntpd
     - name: start ntpd service
       service: name=ntpd enabled=yes state=started
 
   handlers:
     - name: restart ntpd
       service: name=ntpd state=restarted
+
+- hosts: master
+  become: yes
+  tasks:
+    - name: install epel-reop
+      yum: pkg=epel-release state=latest
+      
+    - name: install ansible
+      yum: pkg=ansible state=latest
