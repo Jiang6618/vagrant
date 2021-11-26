@@ -9,3 +9,4 @@ public/
 */*.tar.*
 .vagrant/*
 .vagrant
+quick-demo
