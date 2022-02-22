@@ -9,4 +9,6 @@ public/
 */*.tar.*
 */.vagrant/*
 */.vagrant
-quick-demo
+*/python-demo/
+quick-demo/
+docker/python-demo
