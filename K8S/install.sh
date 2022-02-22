@@ -183,7 +183,9 @@ sed -i "s/#PermitRootLogin yes/PermitRootLogin yes/g" /etc/ssh/sshd_config
 systemctl restart sshd
 
 ## 添加密钥 
-echo "add ssh key"
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDd2IX7HndNRsqEjsFhow+K52eO4L7Vjx5Ce54l0GZwcsiwCp3tAv39KiV48wMioqRoMUCPVZsfTgy8v/9eKNiSdW0NAhUaA8Y0wzSFUcZbeTvGIdJCaBKLpD6ehKtEwCjoZBWpaMlT2/WfGsSktCIaMwS2m3GlT+Rp94fs6AzpeaM9yO2Z7bWvIcDzff5Wc9n28U75NhXzuEDVvAyDeN8GkIAxnHTLHvWwQx8fHWun6NzNppbiXrD5jdntcXFeG6f9kWwRC8U+VMpTs8tWWAKr8z0TNiS3JpF1yfBvCACEs8go/l+FU82n4ilzNNmUqUBFMGdCYayxVG93sRa0YiiZeigm9pmN+kYe61HiDsUEgHFe0bCnbkaUyPJVhyruo520H4sWHU6k+w1tw3Jqy51nOmPYdLpN1lRE3NazKaODExoWG+So14Fz1qaBA+rN7UQWm+YYtglJllTfFYDlnnx30wVtOwb/2v4IuhxyuLEOxhMKN32TJFtP6piKzwcqUqs= Vixtel@DESKTOP-UNFIOA1" >> /home/vagrant/.ssh/authorized_keys
+ssh-keygen -t rsa -N '' -f /root/.ssh/id_rsa
+
+echo "add ssh key"echo "add ssh key"
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuf+zd/jzUOWSYovhzoKiEB6JWyUnPE5yducO3RDhsAyxRUlnMBvEP43MkOBSGgmdAkhz3kZi9twP/fOX4518/S4FvJo3YC2UILOQVgHbgwNqNZUbPrlbKfVE9uN2ikHW/POOhohWcl0Pb0cwi21a0beZ8yNww1vGErftkVEXoDEK+gDiC7w5qsQ+9nBDhAkSbqvANfMucFkNUgH8O0M/1gpaejPc1S9RbseZxEhuS6A7Cb5NhY8lvlJYvKDzrSf1iNBshZ3MwtjNcYIKBL2jQxLC21QfNxMxgDt7eJMGRbUNAn6vCWrF8zbMqSA0u1sSKzTCJk1pwKhcPUvCaQA6F lijunjiang2012@163.com" >> /root/.ssh/authorized_keys
 echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuf+zd/jzUOWSYovhzoKiEB6JWyUnPE5yducO3RDhsAyxRUlnMBvEP43MkOBSGgmdAkhz3kZi9twP/fOX4518/S4FvJo3YC2UILOQVgHbgwNqNZUbPrlbKfVE9uN2ikHW/POOhohWcl0Pb0cwi21a0beZ8yNww1vGErftkVEXoDEK+gDiC7w5qsQ+9nBDhAkSbqvANfMucFkNUgH8O0M/1gpaejPc1S9RbseZxEhuS6A7Cb5NhY8lvlJYvKDzrSf1iNBshZ3MwtjNcYIKBL2jQxLC21QfNxMxgDt7eJMGRbUNAn6vCWrF8zbMqSA0u1sSKzTCJk1pwKhcPUvCaQA6F lijunjiang2012@163.com" >> /home/vagrant/.ssh/authorized_keys
 ###############################################################################
