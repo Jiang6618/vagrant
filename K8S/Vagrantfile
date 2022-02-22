@@ -1,0 +1,28 @@
+Vagrant.configure("2") do |config|
+    # 通用配置
+    config.vm.box_check_update = false
+    config.vm.box = "centos/7"
+    config.vm.box_version = "2004.01"
+    config.vm.box_url = "https://cloud.centos.org/centos/7/vagrant/x86_64/images/CentOS-7-x86_64-Vagrant-2004_01.VirtualBox.box"
+    config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
+
+    # 创建master节点 3个
+    $num_instances = 3
+    $docker_version = "19.03.9-3"
+    (1..$num_instances).each do |i|
+        config.vm.define "k8s-master#{i}" do |node|
+            node.vm.hostname = "k8s-master-#{i}"
+            ip = "172.16.7.#{i + 10}"
+            node.vm.network "public_network", ip: ip, bridge: "en7: AX88179 USB 3.0 to Gigabit Ethernet"
+            node.vm.provider "virtualbox" do |vb|
+                vb.memory = "4096"
+                vb.cpus = 2
+                vb.name = "k8s-master#{i}"
+            end
+
+            node.vm.provision "shell", path: "install.sh", args: [i]
+        end
+    end
+ end
+ 

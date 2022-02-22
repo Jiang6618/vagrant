@@ -36,6 +36,7 @@ Vagrant.require_version ">= 1.3.5", "< 1.4.0"
 ```
 
 ## Loop Over VM Definitions
+
 ```ruby
 (1..3).each do |i|
     config.vm.define "node-#{i}" do |node|

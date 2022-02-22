@@ -1,0 +1,87 @@
+Vagrant.configure("2") do |config|
+    # 通用配置
+    config.vm.box_check_update = false
+    config.vm.box = "centos/7"
+    config.vm.box_version = "2004.01"
+    config.vm.box_url = "https://cloud.centos.org/centos/7/vagrant/x86_64/images/CentOS-7-x86_64-Vagrant-2004_01.VirtualBox.box"
+    config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
+
+    # 创建master节点 3个
+    $num_instances = 3
+    $docker_version = "19.03.9-3"
+    (1..$num_instances).each do |i|
+        config.vm.define "master#{i}" do |node|
+            node.vm.hostname = "mstart-#{i}"
+            ip = "172.16.7.#{i + 10}"
+            node.vm.network "public_network", ip: ip, bridge: "en7: AX88179 USB 3.0 to Gigabit Ethernet"
+            node.vm.provider "virtualbox" do |vb|
+                vb.memory = "4096"
+                vb.cpus = 2
+                vb.name = "master-#{i}"
+            end
+
+            node.vm.provision "ins_docker", type: "shell", run: "only", inline: <<-SHELL
+                ## 安装docker
+                # 清理历史版本
+                yum remove docker \
+                        docker-client \
+                        docker-client-latest \
+                        docker-common \
+                        docker-latest \
+                        docker-latest-logrotate \
+                        docker-logrotate \
+                        docker-engine
+
+                # 安装相关依赖
+                yum install -y yum-utils
+                yum install -y yum-utils device-mapper-persistent-data lvm2
+
+                # 配置阿里云源
+                yum-config-manager --add-repo \
+                    https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo  
+
+                sed -i 's+download.docker.com+mirrors.aliyun.com/docker-ce+'\
+                    /etc/yum.repos.d/docker-ce.repo
+
+                yum makecache fast
+
+                # 安装docker
+                yum -y install docker-ce-19.03.9-3.el7
+
+                # 配置加速
+                mkdir /etc/docker -pv
+                cat >> /etc/docker/docker.json << EOF
+{
+    "registry-mirrors": [
+        "https://8xpk5wnt.mirror.aliyuncs.com"
+    ],
+
+    "insecure-registries": [
+        "172.16.7.139:5000"
+    ]
+}
+EOF
+                # 普通用户使用docker 及 开机自启
+                gpasswd -a vagrand docker
+                systemctl start docker
+                chomd a+rw /var/run/docker.sock 
+
+                systemctl enable docker
+
+                ## 配置sshd，允许key认证
+                sed -i "s/#PermitRootLogin yes/PermitRootLogin yes/g" /etc/ssh/sshd_config 
+                systemctl restart sshd
+
+                # set ssh key for mac && win
+                echo "add ssh key"
+                echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDd2IX7HndNRsqEjsFhow+K52eO4L7Vjx5Ce54l0GZwcsiwCp3tAv39KiV48wMioqRoMUCPVZsfTgy8v/9eKNiSdW0NAhUaA8Y0wzSFUcZbeTvGIdJCaBKLpD6ehKtEwCjoZBWpaMlT2/WfGsSktCIaMwS2m3GlT+Rp94fs6AzpeaM9yO2Z7bWvIcDzff5Wc9n28U75NhXzuEDVvAyDeN8GkIAxnHTLHvWwQx8fHWun6NzNppbiXrD5jdntcXFeG6f9kWwRC8U+VMpTs8tWWAKr8z0TNiS3JpF1yfBvCACEs8go/l+FU82n4ilzNNmUqUBFMGdCYayxVG93sRa0YiiZeigm9pmN+kYe61HiDsUEgHFe0bCnbkaUyPJVhyruo520H4sWHU6k+w1tw3Jqy51nOmPYdLpN1lRE3NazKaODExoWG+So14Fz1qaBA+rN7UQWm+YYtglJllTfFYDlnnx30wVtOwb/2v4IuhxyuLEOxhMKN32TJFtP6piKzwcqUqs= Vixtel@DESKTOP-UNFIOA1" >> /home/vagrant/.ssh/authorized_keys
+                echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuf+zd/jzUOWSYovhzoKiEB6JWyUnPE5yducO3RDhsAyxRUlnMBvEP43MkOBSGgmdAkhz3kZi9twP/fOX4518/S4FvJo3YC2UILOQVgHbgwNqNZUbPrlbKfVE9uN2ikHW/POOhohWcl0Pb0cwi21a0beZ8yNww1vGErftkVEXoDEK+gDiC7w5qsQ+9nBDhAkSbqvANfMucFkNUgH8O0M/1gpaejPc1S9RbseZxEhuS6A7Cb5NhY8lvlJYvKDzrSf1iNBshZ3MwtjNcYIKBL2jQxLC21QfNxMxgDt7eJMGRbUNAn6vCWrF8zbMqSA0u1sSKzTCJk1pwKhcPUvCaQA6F lijunjiang2012@163.com" >> /home/vagrant/.ssh/authorized_keys
+
+                # set selinux
+                setenforce 0
+                sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
+            SHELL
+        end
+    end
+end

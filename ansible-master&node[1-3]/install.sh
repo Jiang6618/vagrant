@@ -7,13 +7,16 @@ echo "change time zone"
 cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 timedatectl set-timezone Asia/Shanghai
 
-echo　"set 163 yum repo"
-rm /etc/yum.repos.d/CentOS-Base.repo
-cp /vagrant/yum/*.* /etc/yum.repos.d/
-mv /etc/yum.repos.d/CentOS7-Base-163.repo /etc/yum.repos.d/CentOS-Base.repo
+echo "set aliyum repo"
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
 
-echo　"install soft"
-yum install epel-release -y
+curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo
+
+
+echo "install soft"
+rpm -Uvh https://mirrors.aliyun.com/epel/epel-release-latest-7.noarch.rpm
+
+yum clean all && yum makecache fast
 yum install vim wget curl tree net-tools -y
 
 # enable ntp to sync time

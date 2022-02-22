@@ -1,0 +1,9 @@
+{
+    "registry-mirrors": [
+        "https://8xpk5wnt.mirror.aliyuncs.com"
+    ],
+
+    "insecure-registries": [
+        "172.16.7.139:5000"
+    ]
+}
