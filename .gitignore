@@ -7,6 +7,6 @@ public/
 .deploy*/
 */.vagrant/*
 */*.tar.*
-.vagrant/*
-.vagrant
+*/.vagrant/*
+*/.vagrant
 quick-demo
